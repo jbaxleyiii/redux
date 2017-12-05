@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-
-import Picker from '../components/Picker';
 import Posts from '../components/Posts';
 
 class App extends Component {
@@ -40,12 +38,10 @@ class App extends Component {
             <button onClick={this.handleRefreshClick}>Refresh</button>
           )}
         </p>
-        {isEmpty ? (
-          loading ? (
-            <h2>Loading...</h2>
-          ) : (
-            <h2>Empty.</h2>
-          )
+        {isEmpty ? loading ? (
+          <h2>Loading...</h2>
+        ) : (
+          <h2>Empty.</h2>
         ) : (
           <div style={{ opacity: loading ? 0.5 : 1 }}>
             <Posts posts={posts} />
