@@ -1,55 +1,32 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import {
-  selectSubreddit,
-  fetchPostsIfNeeded,
-  invalidateSubreddit,
-} from '../actions';
+import { graphql } from 'react-apollo';
+import gql from 'graphql-tag';
 import Picker from '../components/Picker';
 import Posts from '../components/Posts';
 
 class App extends Component {
   static propTypes = {
-    selectedSubreddit: PropTypes.string.isRequired,
+    subreddit: PropTypes.string.isRequired,
     posts: PropTypes.array.isRequired,
-    isFetching: PropTypes.bool.isRequired,
+    loading: PropTypes.bool.isRequired,
     lastUpdated: PropTypes.number,
-    dispatch: PropTypes.func.isRequired,
-  };
-
-  componentDidMount() {
-    const { dispatch, selectedSubreddit } = this.props;
-    dispatch(fetchPostsIfNeeded(selectedSubreddit));
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.selectedSubreddit !== this.props.selectedSubreddit) {
-      const { dispatch, selectedSubreddit } = nextProps;
-      dispatch(fetchPostsIfNeeded(selectedSubreddit));
-    }
-  }
-
-  handleChange = nextSubreddit => {
-    this.props.dispatch(selectSubreddit(nextSubreddit));
+    onChange: PropTypes.func.isRequired,
   };
 
   handleRefreshClick = e => {
     e.preventDefault();
-
-    const { dispatch, selectedSubreddit } = this.props;
-    dispatch(invalidateSubreddit(selectedSubreddit));
-    dispatch(fetchPostsIfNeeded(selectedSubreddit));
+    this.props.refetch({ subreddit: this.props.subreddit });
   };
 
   render() {
-    const { selectedSubreddit, posts, isFetching, lastUpdated } = this.props;
+    const { subreddit, posts, loading, lastUpdated, onChange } = this.props;
     const isEmpty = posts.length === 0;
     return (
       <div>
         <Picker
-          value={selectedSubreddit}
-          onChange={this.handleChange}
+          value={subreddit}
+          onChange={onChange}
           options={['reactjs', 'frontend']}
         />
         <p>
@@ -58,16 +35,16 @@ class App extends Component {
               Last updated at {new Date(lastUpdated).toLocaleTimeString()}.{' '}
             </span>
           )}
-          {!isFetching && (
+          {!loading && (
             <button onClick={this.handleRefreshClick}>Refresh</button>
           )}
         </p>
-        {isEmpty ? isFetching ? (
+        {isEmpty ? loading ? (
           <h2>Loading...</h2>
         ) : (
           <h2>Empty.</h2>
         ) : (
-          <div style={{ opacity: isFetching ? 0.5 : 1 }}>
+          <div style={{ opacity: loading ? 0.5 : 1 }}>
             <Posts posts={posts} />
           </div>
         )}
@@ -76,21 +53,42 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  const { selectedSubreddit, postsBySubreddit } = state;
-  const { isFetching, lastUpdated, items: posts } = postsBySubreddit[
-    selectedSubreddit
-  ] || {
-    isFetching: true,
-    items: [],
-  };
+const SELECT_SUBREDDIT = gql`
+  query RequestPosts($subreddit: String) {
+    postsBySubreddit(subreddit: $subreddit) @client {
+      id
+      lastUpdated
+      items {
+        title
+      }
+    }
+  }
+`;
 
-  return {
-    selectedSubreddit,
-    posts,
-    isFetching,
-    lastUpdated,
-  };
-};
+const withSubreddits = graphql(SELECT_SUBREDDIT, {
+  options: { notifyOnNetworkStatusChange: true },
+  props: ({ data, ownProps }) => ({
+    ...ownProps,
+    ...data,
+    posts: data.postsBySubreddit ? data.postsBySubreddit.items : [],
+    lastUpdated: data.postsBySubreddit
+      ? data.postsBySubreddit.lastUpdated
+      : null,
+  }),
+});
 
-export default connect(mapStateToProps)(App);
+const AppWithData = withSubreddits(App);
+
+// this will be much easier with react-apollo 2.0
+export default class VariableChange extends Component {
+  state = { subreddit: 'reactjs' };
+
+  render() {
+    return (
+      <AppWithData
+        subreddit={this.state.subreddit}
+        onChange={subreddit => this.setState({ subreddit })}
+      />
+    );
+  }
+}
