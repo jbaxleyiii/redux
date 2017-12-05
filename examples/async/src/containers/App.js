@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { graphql } from 'react-apollo';
-import gql from 'graphql-tag';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { graphql } from "react-apollo";
+import gql from "graphql-tag";
 
-import Picker from '../components/Picker';
-import Posts from '../components/Posts';
+import Picker from "../components/Picker";
+import Posts from "../components/Posts";
 
 class App extends Component {
   static propTypes = {
@@ -36,24 +36,22 @@ class App extends Component {
         <Picker
           value={selectedSubreddit}
           onChange={change}
-          options={['reactjs', 'frontend']}
+          options={["reactjs", "frontend"]}
         />
         <p>
           {lastUpdated && (
             <span>
-              Last updated at {new Date(lastUpdated).toLocaleTimeString()}.{' '}
+              Last updated at {new Date(lastUpdated).toLocaleTimeString()}.{" "}
             </span>
           )}
           {!isFetching && (
             <button onClick={this.handleRefreshClick}>Refresh</button>
           )}
         </p>
-        {isEmpty ? (
-          isFetching ? (
-            <h2>Loading...</h2>
-          ) : (
-            <h2>Empty.</h2>
-          )
+        {isEmpty ? isFetching ? (
+          <h2>Loading...</h2>
+        ) : (
+          <h2>Empty.</h2>
         ) : (
           <div style={{ opacity: isFetching ? 0.5 : 1 }}>
             <Posts posts={posts} />
@@ -98,7 +96,7 @@ const AppWithData = withSubreddits(App);
 // this will be much easier with react-apollo 2.0
 export default class VariableChange extends Component {
   state = {
-    subreddit: 'reactjs',
+    subreddit: "reactjs",
   };
 
   render() {
