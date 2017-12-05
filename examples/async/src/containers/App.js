@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
+import Picker from '../components/Picker';
 import Posts from '../components/Posts';
 
 class App extends Component {
