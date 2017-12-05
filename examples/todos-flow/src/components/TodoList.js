@@ -8,7 +8,7 @@ import type { Todos, Id } from '../types/todos';
 
 export type Props = {
   todos: Todos,
-  onTodoClick: (id: Id) => void
+  onTodoClick: (id: Id) => void,
 };
 
 const TodoList = ({ todos, onTodoClick }: Props) => (

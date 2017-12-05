@@ -6,7 +6,7 @@ import type { Action } from '../types';
 const createTodo = (id: Id, text: Text): Todo => ({
   id,
   text,
-  completed: false
+  completed: false,
 });
 
 const toggleTodo = (todos: Todos, id: Id): Todos =>

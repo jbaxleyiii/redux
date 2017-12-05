@@ -1,33 +1,33 @@
-export const INCREMENT = 'INCREMENT'
-export const CREATE_NODE = 'CREATE_NODE'
-export const DELETE_NODE = 'DELETE_NODE'
-export const ADD_CHILD = 'ADD_CHILD'
-export const REMOVE_CHILD = 'REMOVE_CHILD'
+export const INCREMENT = 'INCREMENT';
+export const CREATE_NODE = 'CREATE_NODE';
+export const DELETE_NODE = 'DELETE_NODE';
+export const ADD_CHILD = 'ADD_CHILD';
+export const REMOVE_CHILD = 'REMOVE_CHILD';
 
-export const increment = (nodeId) => ({
+export const increment = nodeId => ({
   type: INCREMENT,
-  nodeId
-})
+  nodeId,
+});
 
-let nextId = 0
+let nextId = 0;
 export const createNode = () => ({
   type: CREATE_NODE,
-  nodeId: `new_${nextId++}`
-})
+  nodeId: `new_${nextId++}`,
+});
 
-export const deleteNode = (nodeId) => ({
+export const deleteNode = nodeId => ({
   type: DELETE_NODE,
-  nodeId
-})
+  nodeId,
+});
 
 export const addChild = (nodeId, childId) => ({
   type: ADD_CHILD,
   nodeId,
-  childId
-})
+  childId,
+});
 
 export const removeChild = (nodeId, childId) => ({
   type: REMOVE_CHILD,
   nodeId,
-  childId
-})
+  childId,
+});

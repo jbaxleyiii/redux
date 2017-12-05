@@ -9,17 +9,17 @@ import type { Dispatch } from '../types';
 import type { Connector } from 'react-redux';
 
 export type Props = {
-  dispatch: Dispatch
+  dispatch: Dispatch,
 };
 
 export type State = {
-  value: string
+  value: string,
 };
 
 class AddTodo extends Component<Props, State> {
   input: HTMLInputElement;
   state = {
-    value: ''
+    value: '',
   };
   handleChange = (event: SyntheticKeyboardEvent<HTMLInputElement>) => {
     this.setState({ value: event.currentTarget.value });
@@ -37,9 +37,7 @@ class AddTodo extends Component<Props, State> {
       <div>
         <form onSubmit={this.handleSubmit}>
           <input value={this.state.value} onChange={this.handleChange} />
-          <button type="submit">
-            Add Todo
-          </button>
+          <button type="submit">Add Todo</button>
         </form>
       </div>
     );

@@ -12,15 +12,15 @@ import type { Store } from './types';
 
 const store: Store = createStore(
   reducers,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
 );
 const element = document.getElementById('root');
 if (!element) {
-  throw new Error("couldn't find element with id root")
+  throw new Error("couldn't find element with id root");
 }
 render(
   <Provider store={store}>
     <App />
   </Provider>,
-  element
+  element,
 );

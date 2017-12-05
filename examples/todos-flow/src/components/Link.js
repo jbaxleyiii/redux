@@ -5,7 +5,7 @@ import React, { type Node } from 'react';
 export type Props = {
   active: boolean,
   children?: Node,
-  onClick: () => void
+  onClick: () => void,
 };
 
 const Link = ({ active, children, onClick }: Props) => {

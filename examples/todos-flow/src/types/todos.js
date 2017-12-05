@@ -7,13 +7,13 @@ export type Text = string;
 export type Todo = {
   +id: Id,
   +text: Text,
-  +completed: boolean
+  +completed: boolean,
 };
 
 export type Todos = Array<Todo>;
 
 export type TodosState = {
-  +todos: Todos
+  +todos: Todos,
 };
 
 export type TodosAction =

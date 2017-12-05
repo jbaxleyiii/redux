@@ -13,7 +13,7 @@ import type { Props } from '../components/TodoList';
 
 const mapStateToProps = (state: State) => {
   return {
-    todos: visibleTodosSelector(state)
+    todos: visibleTodosSelector(state),
   };
 };
 
@@ -21,13 +21,13 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
     onTodoClick: id => {
       dispatch(toggleTodo(id));
-    }
+    },
   };
 };
 
 const connector: Connector<{}, Props> = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 );
 
 export default connector(TodoList);

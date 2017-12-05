@@ -20,5 +20,5 @@ export const visibleTodosSelector = createSelector(
       default:
         return todos;
     }
-  }
+  },
 );

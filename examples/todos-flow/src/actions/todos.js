@@ -8,13 +8,13 @@ export const addTodo = (text: Text): TodosAction => {
   return {
     type: 'ADD_TODO',
     id: nextTodoId++,
-    text
+    text,
   };
 };
 
 export const toggleTodo = (id: Id): TodosAction => {
   return {
     type: 'TOGGLE_TODO',
-    id
+    id,
   };
 };
